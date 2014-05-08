@@ -1,0 +1,39 @@
+| OPEN|BERKLEY README |
+
+| OVERVIEW |
+Open|Berkley is an Open Source recreation of the video game Shenmue, developed
+by SEGA AM2, published by SEGA Corporation.  The goal of the project is to
+emulate the original game.  All assets and code will be created via observing
+the source material, nothing from the original game will be used directly in
+this emulation.
+
+There are a few sub-goals of this project:
+Sub-Goal #1
+* Using current personal computer hardware, attempt to fully realise the world
+  of Shenmue in as much detail as possible
+
+Sub-Goal #2
+* Make the game available on as many hardware platforms as possible, with the
+  restriciton being that the platform needs to produce 3D polygons
+
+There is a high chance of this project receiving a cease and desist order if
+the copyright holder of the original work (SEGA Corporation) deems it
+necessary.  The owners of the project fully realise and respect the copyright
+holder's ultimate authority over the protection of their intellectual property.
+
+| PLATFORMS SUPPORTED |
+Currently, there are three planned platforms which will be supported:
+* Linux
+* Microsoft Windows
+* DragonBox Pyra
+
+| DOCUMENTATION |
+The documentation for the project (such as design notes, AI behaviour, area
+layout, and the project roadmap) are maintained at the following Git
+repository:
+https://github.com/OpenGameDevelopers/OpenBerkley-Documentation
+
+| BUGS |
+Please use the following URI for reporting bugs:
+https://github.com/OpenGameDevelopers/OpenBerkley/issues
+
