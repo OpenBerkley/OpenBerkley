@@ -70,7 +70,7 @@ SYSIPATH	=
 INCPATH		=	-I$(ZEDSDK)/include/Linux
 SYSLPATH	=	
 LIBPATH		=	-L$(ZEDSDK)/lib/Linux/$(ARCH)/$(BITSIZE)
-SYSLIBS		=	-lX11 -lGL -lXrandr -lrt -pthread
+SYSLIBS		=	-lX11 -lGL -lXrandr -lrt -pthread -lXi
 LINKFLAGS	=
 
 ##### Debug #######

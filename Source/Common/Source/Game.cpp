@@ -1,6 +1,7 @@
 #include <Game.hpp>
 #include <cstring>
 #include <System/Memory.hpp>
+#include <GitVersion.hpp>
 #include <unistd.h>
 
 namespace OpenBerkely
@@ -68,18 +69,21 @@ namespace OpenBerkely
 			return ZED_FAIL;
 		}
 
-		// 3C 76 C0 - European Dreamcast Blue
-		ZED_FLOAT32 Red = 60.0f / 255.0f;
-		ZED_FLOAT32 Green = 112.0f / 255.0f;
-		ZED_FLOAT32 Blue = 192.0f / 255.0f;
+		// 247 191 11 - Shenmue.com website background colour
+		// 60 112 192 -  European Dreamcast Blue
+
+		ZED_FLOAT32 Red = 247.0f / 255.0f;
+		ZED_FLOAT32 Green = 191.0f / 255.0f;
+		ZED_FLOAT32 Blue = 11.0f / 255.0f;
 
 		m_pRenderer->ClearColour( Red, Green, Blue );
 		m_pRenderer->RenderState( ZED_RENDERSTATE_CULLMODE,
 			ZED_CULLMODE_NONE );
 		m_pRenderer->RenderState( ZED_RENDERSTATE_DEPTH, ZED_ENABLE );
+
 		ZED::System::WINDOWDATA WindowData = m_pWindow->WindowData( );
 
-		if( m_pInputManager->SetWindowData( WindowData ) != ZED_OK )
+		if( m_pInputManager->Initialise( WindowData ) != ZED_OK )
 		{
 			zedTrace( "[Open|Berkely::Game::Initialise] <ERROR> "
 				"Failed to set window data for the new input manager\n" );
@@ -87,7 +91,16 @@ namespace OpenBerkely
 			return ZED_FAIL;
 		}
 
+		m_Keyboard.SetIndividual( );
 		m_pInputManager->AddDevice( &m_Keyboard );
+
+		ZED_CHAR8 *pTitle = new ZED_CHAR8[ 1024 ];
+
+		sprintf( pTitle, "Open|Berkley - Version %s [%s]", GIT_BUILD_VERSION,
+			GIT_TAG_NAME );
+		m_pWindow->Title( pTitle );
+
+		zedSafeDeleteArray( pTitle );
 
 		return ZED_OK;
 	}
