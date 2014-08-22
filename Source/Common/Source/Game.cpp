@@ -2,18 +2,21 @@
 #include <cstring>
 #include <System/Memory.hpp>
 #include <GitVersion.hpp>
+#include <Game/GameStateManager.hpp>
+#include <GameplayGameState.hpp>
+#include <Utility/EventRouter.hpp>
+#include <Utility/Events.hpp>
 #include <unistd.h>
 
-namespace OpenBerkely
+namespace OpenBerkley
 {
-	Game::Game( )
+	Game::Game( ) :
+		m_pWindow( ZED_NULL ),
+		m_pRenderer( ZED_NULL ),
+		m_pInputManager( ZED_NULL ),
+		m_Running( ZED_FALSE )
 	{
-		m_pWindow = ZED_NULL;
-		m_pRenderer = ZED_NULL;
-		m_pInputManager = ZED_NULL;
-
 		memset( &m_Canvas, 0, sizeof( m_Canvas ) );
-		m_Running = ZED_FALSE;
 	}
 
 	Game::~Game( )
@@ -107,6 +110,29 @@ namespace OpenBerkely
 
 	ZED_UINT32 Game::Execute( )
 	{
+		if( ZED::Game::GameStateManager::GetInstance( ).Initialise( ) !=
+			ZED_OK )
+		{
+			return ZED_FAIL;
+		}
+
+		if( ZED::Game::GameStateManager::GetInstance( ).SetRenderer(
+			m_pRenderer ) != ZED_OK )
+		{
+			return ZED_FAIL;
+		}
+
+		GameplayGameState *pGameplay = new GameplayGameState( );
+
+		ZED::Game::GameStateManager::GetInstance( ).RegisterState( pGameplay );
+
+		ZED::Game::GameStateManager::GetInstance( ).PushState( "Gameplay" );
+
+		ZED_KEYBOARDSTATE PreviousKeyboardState;
+		memset( &PreviousKeyboardState, 0, sizeof( PreviousKeyboardState ) );
+		ZED_MEMSIZE KeyCount =	sizeof( PreviousKeyboardState ) /
+								sizeof( PreviousKeyboardState.Key[ 0 ] );
+
 		m_Running = ZED_TRUE;
 
 		while( m_Running )
@@ -127,28 +153,42 @@ namespace OpenBerkely
 				m_GameConfiguration.SetYPosition( m_pWindow->GetYPosition( ) );
 			}
 
-			if( m_Keyboard.IsKeyDown( ZED_KEY_ESCAPE ) )
+			ZED_KEYBOARDSTATE NewKeyboardState;
+			m_Keyboard.State( &NewKeyboardState );
+
+			for( ZED_MEMSIZE i = 0; i < KeyCount; ++i )
 			{
-				m_Running = ZED_FALSE;
+				ZED_KEY ZEDKey = static_cast< ZED_KEY >( i );
+
+				if( ( NewKeyboardState.Key[ i ] 
+						!= PreviousKeyboardState.Key[ i ] ) ||
+					( NewKeyboardState.Key[ i ] == 1 &&
+						PreviousKeyboardState.Key[ i ] == 1 ) )
+				{
+					ZED::Utility::KeyboardInputEventData KeyboardData;
+					KeyboardData.SetState( ZEDKey,
+						NewKeyboardState.Key[ i ] );
+
+					ZED::Utility::KeyboardEvent Keyboard( &KeyboardData );
+					ZED::Utility::SendEvent( Keyboard );
+				}
 			}
+
+
+			ZED::Game::GameStateManager::GetInstance( ).Execute( );
 			
-			this->Update( 16667ULL );
-			this->Render( );
+			m_Running =
+				ZED::Game::GameStateManager::GetInstance( ).IsRunning( );
+
+			memcpy( &PreviousKeyboardState, &NewKeyboardState,
+				sizeof( PreviousKeyboardState ) );
 		}
+
+		zedSafeDelete( pGameplay );
 
 		m_GameConfiguration.Write( );
 
 		return ZED_OK;
-	}
-
-	void Game::Update( const ZED_UINT64 p_MicroSeconds )
-	{
-	}
-
-	void Game::Render( )
-	{
-		m_pRenderer->BeginScene( ZED_TRUE, ZED_TRUE, ZED_TRUE );
-		m_pRenderer->EndScene( );
 	}
 }
 

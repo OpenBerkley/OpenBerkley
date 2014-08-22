@@ -6,7 +6,7 @@
 #include <string>
 #include <sstream>
 
-namespace OpenBerkely
+namespace OpenBerkley
 {
 	Configuration::Configuration( ) :
 		m_X( 0 ),

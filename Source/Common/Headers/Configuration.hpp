@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-namespace OpenBerkely
+namespace OpenBerkley
 {
 	class Configuration
 	{

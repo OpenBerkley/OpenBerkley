@@ -3,7 +3,7 @@
 #include <Renderer/LinuxRendererOGL3.hpp>
 #include <System/LinuxInputManager.hpp>
 
-namespace OpenBerkely
+namespace OpenBerkley
 {
 	ZED_UINT32 Game::PreInitialise( )
 	{

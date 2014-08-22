@@ -1,5 +1,5 @@
-#ifndef ___GAME_HPP__
-#define ___GAME_HPP__
+#ifndef __OPENBERKLEY_GAME_HPP__
+#define __OPENBERKLEY_GAME_HPP__
 
 #include <System/DataTypes.hpp>
 #include <System/Window.hpp>
@@ -9,7 +9,7 @@
 #include <Renderer/CanvasDescription.hpp>
 #include <Configuration.hpp>
 
-namespace OpenBerkely
+namespace OpenBerkley
 {
 	class Game
 	{
@@ -22,8 +22,6 @@ namespace OpenBerkely
 
 	private:
 		ZED_UINT32 PreInitialise( );
-		void Update( const ZED_UINT64 p_MicroSeconds );
-		void Render( );
 
 		ZED::System::Window					*m_pWindow;
 		ZED::System::InputManager			*m_pInputManager;

@@ -11,7 +11,7 @@ int main( int p_Argc, char **p_ppArgv )
 	std::cout << "\tTag: " << GIT_TAG_NAME << std::endl;
 	std::cout << "\tBranch: " << GIT_BRANCH << std::endl;
 
-	OpenBerkely::Game TheGame;
+	OpenBerkley::Game TheGame;
 
 	if( TheGame.Initialise( ) != ZED_OK )
 	{
