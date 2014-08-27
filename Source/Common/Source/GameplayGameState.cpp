@@ -27,6 +27,7 @@ namespace OpenBerkley
 
 	ZED_UINT32 GameplayGameState::Enter( )
 	{
+		ZED::Utility::SetGlobalEventRouter( this->m_pEventRouter );
 		m_pRenderer = GameStateManager::GetInstance( ).GetRenderer( );
 
 		ZED_FLOAT32 Red = 247.0f / 255.0f;
@@ -41,7 +42,7 @@ namespace OpenBerkley
 
 		GameStateManager::GetInstance( ).SetInputBinder(
 			m_pInputBinder );
-
+		
 		m_pEventRouter->Add( m_pInputListener,
 			ZED::Utility::ActionInputEventType );
 
@@ -58,7 +59,8 @@ namespace OpenBerkley
 
 	ZED_UINT32 GameplayGameState::Exit( )
 	{
-		GameStateManager::GetInstance( ).PopState( );
+		// In the real game, this should go to the main menu when confirmed
+		GameStateManager::GetInstance( ).Quit( );
 
 		return ZED_OK;
 	}

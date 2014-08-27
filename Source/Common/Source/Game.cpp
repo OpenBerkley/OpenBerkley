@@ -4,6 +4,7 @@
 #include <GitVersion.hpp>
 #include <GameStateManager.hpp>
 #include <GameplayGameState.hpp>
+#include <SplashScreenState.hpp>
 #include <Utility/EventRouter.hpp>
 #include <Utility/Events.hpp>
 #include <unistd.h>
@@ -122,10 +123,12 @@ namespace OpenBerkley
 		}
 
 		GameplayGameState *pGameplay = new GameplayGameState( );
+		SplashScreenState *pSplashScreen = new SplashScreenState( );
 
 		GameStateManager::GetInstance( ).RegisterState( pGameplay );
+		GameStateManager::GetInstance( ).RegisterState( pSplashScreen );
 
-		GameStateManager::GetInstance( ).PushState( "Gameplay" );
+		GameStateManager::GetInstance( ).PushState( "Splash Screen" );
 
 		ZED_KEYBOARDSTATE PreviousKeyboardState;
 		memset( &PreviousKeyboardState, 0, sizeof( PreviousKeyboardState ) );
@@ -183,6 +186,7 @@ namespace OpenBerkley
 		}
 
 		zedSafeDelete( pGameplay );
+		zedSafeDelete( pSplashScreen );
 
 		m_GameConfiguration.Write( );
 
