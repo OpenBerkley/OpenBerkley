@@ -2,7 +2,7 @@
 #include <cstring>
 #include <System/Memory.hpp>
 #include <GitVersion.hpp>
-#include <Game/GameStateManager.hpp>
+#include <GameStateManager.hpp>
 #include <GameplayGameState.hpp>
 #include <Utility/EventRouter.hpp>
 #include <Utility/Events.hpp>
@@ -110,23 +110,22 @@ namespace OpenBerkley
 
 	ZED_UINT32 Game::Execute( )
 	{
-		if( ZED::Game::GameStateManager::GetInstance( ).Initialise( ) !=
-			ZED_OK )
+		if( GameStateManager::GetInstance( ).Initialise( ) != ZED_OK )
 		{
 			return ZED_FAIL;
 		}
 
-		if( ZED::Game::GameStateManager::GetInstance( ).SetRenderer(
-			m_pRenderer ) != ZED_OK )
+		if( GameStateManager::GetInstance( ).SetRenderer( m_pRenderer ) !=
+			ZED_OK )
 		{
 			return ZED_FAIL;
 		}
 
 		GameplayGameState *pGameplay = new GameplayGameState( );
 
-		ZED::Game::GameStateManager::GetInstance( ).RegisterState( pGameplay );
+		GameStateManager::GetInstance( ).RegisterState( pGameplay );
 
-		ZED::Game::GameStateManager::GetInstance( ).PushState( "Gameplay" );
+		GameStateManager::GetInstance( ).PushState( "Gameplay" );
 
 		ZED_KEYBOARDSTATE PreviousKeyboardState;
 		memset( &PreviousKeyboardState, 0, sizeof( PreviousKeyboardState ) );
@@ -175,10 +174,9 @@ namespace OpenBerkley
 			}
 
 
-			ZED::Game::GameStateManager::GetInstance( ).Execute( );
+			GameStateManager::GetInstance( ).Execute( );
 			
-			m_Running =
-				ZED::Game::GameStateManager::GetInstance( ).IsRunning( );
+			m_Running = GameStateManager::GetInstance( ).IsRunning( );
 
 			memcpy( &PreviousKeyboardState, &NewKeyboardState,
 				sizeof( PreviousKeyboardState ) );

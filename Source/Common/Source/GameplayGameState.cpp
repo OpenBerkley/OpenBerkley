@@ -1,6 +1,6 @@
 #include <GameplayGameState.hpp>
 #include <GameplayEvents.hpp>
-#include <Game/GameStateManager.hpp>
+#include <GameStateManager.hpp>
 #include <System/Debugger.hpp>
 #include <System/Memory.hpp>
 #include <Utility/InputBinder.hpp>
@@ -27,8 +27,7 @@ namespace OpenBerkley
 
 	ZED_UINT32 GameplayGameState::Enter( )
 	{
-		m_pRenderer =
-			ZED::Game::GameStateManager::GetInstance( ).GetRenderer( );
+		m_pRenderer = GameStateManager::GetInstance( ).GetRenderer( );
 
 		ZED_FLOAT32 Red = 247.0f / 255.0f;
 		ZED_FLOAT32 Green = 191.0f / 255.0f;
@@ -40,7 +39,7 @@ namespace OpenBerkley
 
 		m_pInputListener->SetGameplayGameState( this );
 
-		ZED::Game::GameStateManager::GetInstance( ).SetInputBinder(
+		GameStateManager::GetInstance( ).SetInputBinder(
 			m_pInputBinder );
 
 		m_pEventRouter->Add( m_pInputListener,
@@ -59,7 +58,7 @@ namespace OpenBerkley
 
 	ZED_UINT32 GameplayGameState::Exit( )
 	{
-		ZED::Game::GameStateManager::GetInstance( ).PopState( );
+		GameStateManager::GetInstance( ).PopState( );
 
 		return ZED_OK;
 	}
